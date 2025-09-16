@@ -1,0 +1,46 @@
+[
+    {
+        "url": "http://localhost:8080/login.php",
+        "title": "Login :: Damn Vulnerable Web Application (DVWA) v1.10 *Development*",
+        "meta_description": "",
+        "headings": [],
+        "forms": [
+            {
+                "action": "http://localhost:8080/login.php",
+                "method": "POST",
+                "inputs": [
+                    {
+                        "name": "username",
+                        "type": "text",
+                        "placeholder": "",
+                        "value": "",
+                        "required": false
+                    },
+                    {
+                        "name": "password",
+                        "type": "password",
+                        "placeholder": "",
+                        "value": "",
+                        "required": false
+                    },
+                    {
+                        "name": "Login",
+                        "type": "submit",
+                        "placeholder": "",
+                        "value": "Login",
+                        "required": false
+                    },
+                    {
+                        "name": "user_token",
+                        "type": "hidden",
+                        "placeholder": "",
+                        "value": "9d18b6c8f690ae2f5d4d09a3fe1184ae",
+                        "required": false
+                    }
+                ]
+            }
+        ],
+        "query_params": {},
+        "crawl_date": "2025-09-16 17:43:56"
+    }
+]
