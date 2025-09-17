@@ -20,7 +20,8 @@ class WebCrawler:
                             format='%(asctime)s - %(levelname)s - %(message)s')
 
     def is_same_domain(self, url):
-        return urlparse(url).netloc == self.domain
+        parsed = urlparse(url)
+        return parsed.netloc == self.domain and parsed.scheme in ['http', 'https']
 
     def extract_metadata(self, soup, url):
         metadata = {
@@ -69,28 +70,24 @@ class WebCrawler:
             current_url = self.queue.popleft()
             if current_url in self.visited:
                 continue
-            print(current_url)
+            print(f"Crawling: {current_url}")
             self.visited.add(current_url)
 
             try:
                 logging.info(f"Crawling: {current_url}")
                 response = self.session.get(current_url, timeout=10)
                 response.raise_for_status()
-
                 soup = BeautifulSoup(response.content, 'html.parser')
                 page_data = self.extract_metadata(soup, current_url)
                 page_data['crawl_date'] = time.strftime('%Y-%m-%d %H:%M:%S')
                 self.results.append(page_data)
-
-                # Find new links
+                # Extract and queue same-domain links
                 links = soup.find_all('a', href=True)
                 for link in links:
                     href = urljoin(current_url, link['href'])
-                    if self.is_same_domain(href) and href not in self.visited:
+                    if self.is_same_domain(href) and href not in self.visited and href not in self.queue:
                         self.queue.append(href)
-
                 time.sleep(self.delay)
-
             except requests.RequestException as e:
                 logging.error(f"Error crawling {current_url}: {e}")
             except Exception as e:

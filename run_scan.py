@@ -1,48 +1,72 @@
-
 import requests
+from crawler import WebCrawler
+from sqli_tester import SQLiTester
+from xss_tester import XssTester
 
-from WebScanPro.Crawler import WebCrawler
-from WebScanPro.SQLiTester import SQLiTester
+def login(session, login_url, username, password):
+
+    response = session.get(login_url)
+    if response.status_code != 200:
+        print("Failed to fetch login page.")
+        return False
+
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(response.content, 'html.parser')
 
 
-def login(session, login_url, username, password, user_token):
-    login_data = {
+    user_token = ''
+    token_input = soup.find('input', {'name': 'user_token'})
+    if token_input:
+        user_token = token_input.get('value', '')
+
+# Login process
+    data = {
         'username': username,
         'password': password,
         'Login': 'Login',
         'user_token': user_token
     }
-    response = session.post(login_url, data=login_data)
-    if response.ok:
-        print("Logged in successfully!")
-    else:
+
+    login_response = session.post(login_url, data=data)
+    if "Login failed" in login_response.text or login_response.status_code != 200:
         print("Login failed!")
-    return response.ok
+        return False
 
-if __name__ == "__main__":
+    print("Logged in successfully!")
+    return True
+
+
+
+def main():
+
+# Keep session alive for the entire peocess
+
     session = requests.Session()
-    session.headers.update({
-        'User-Agent': 'Mozilla/5.0'
-    })
-
-    # Login details
     login_url = "http://localhost:8080/login.php"
     username = "admin"
     password = "password"
-    user_token = "9c3ce7f4749551b26a0e93cafd62c7d2"  # Get this from inspecting the form
+    if not login(session, login_url, username, password):
+        return
 
-    if not login(session, login_url, username, password, user_token):
-        print("Cannot proceed without login.")
-        exit()
-
+# Crawl the website
     start_url = "http://localhost:8080/login.php"
-
     crawler = WebCrawler(start_url, session=session)
     crawler.crawl()
     crawler.save_results()
 
-    tester = SQLiTester(session=session)
-    tester.run_tests(crawler.results)
-    tester.generate_report()
 
-    print("Crawling and SQL Injection testing completed.")
+# Run SQLInjection testing
+    sqli_tester = SQLiTester(session=session)
+    sqli_tester.run_tests(crawler.results)
+    sqli_tester.generate_report()
+
+
+#  XSS testing
+    xss_tester = XssTester(session=session)
+    xss_tester.run_tests(crawler.results)
+    xss_tester.generate_report()
+
+    print("Crawling and testing completed.")
+
+if __name__ == "__main__":
+    main()
