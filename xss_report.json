@@ -1,6 +1,34 @@
 {
-    "total_vulnerabilities": 2,
+    "total_vulnerabilities": 4,
     "vulnerabilities": [
+        {
+            "url": "http://localhost:8080/login.php",
+            "test_type": "form",
+            "target": "http://localhost:8080/login.php",
+            "payload": {
+                "username": "<script>alert('XSS')</script>",
+                "password": "<script>alert('XSS')</script>",
+                "Login": "Login",
+                "user_token": "4a7df57b5097ab3e2485b09d31c9bdbf"
+            },
+            "http_status": 200,
+            "detection_method": "behavioral_difference",
+            "evidence": "\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\r\n\t<head>\r\n\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n\r\n\t\t<title>Login :: Damn Vulnerable Web Application (D"
+        },
+        {
+            "url": "http://localhost:8080/login.php",
+            "test_type": "form",
+            "target": "http://localhost:8080/login.php",
+            "payload": {
+                "username": "<img src=x onerror=alert('XSS')>",
+                "password": "<img src=x onerror=alert('XSS')>",
+                "Login": "Login",
+                "user_token": "4a7df57b5097ab3e2485b09d31c9bdbf"
+            },
+            "http_status": 200,
+            "detection_method": "behavioral_difference",
+            "evidence": "\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\r\n\t<head>\r\n\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n\r\n\t\t<title>Login :: Damn Vulnerable Web Application (D"
+        },
         {
             "url": "http://localhost:8080/login.php",
             "test_type": "form",
@@ -9,11 +37,11 @@
                 "username": "'><script>alert('XSS')</script>",
                 "password": "'><script>alert('XSS')</script>",
                 "Login": "Login",
-                "user_token": "f46db36bc4a4959fb58ea8df576cf410"
+                "user_token": "4a7df57b5097ab3e2485b09d31c9bdbf"
             },
             "http_status": 200,
             "detection_method": "behavioral_difference",
-            "evidence": "\r\n<!doctype html public \"-//w3c//dtd xhtml 1.0 strict//en\" \"http://www.w3.org/tr/xhtml1/dtd/xhtml1-strict.dtd\">\r\n\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\r\n\t<head>\r\n\r\n\t\t<meta http-equiv=\"content"
+            "evidence": "\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\r\n\t<head>\r\n\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n\r\n\t\t<title>Login :: Damn Vulnerable Web Application (D"
         },
         {
             "url": "http://localhost:8080/login.php",
@@ -23,18 +51,17 @@
                 "username": "<svg onload=alert('XSS')>",
                 "password": "<svg onload=alert('XSS')>",
                 "Login": "Login",
-                "user_token": "f46db36bc4a4959fb58ea8df576cf410"
+                "user_token": "4a7df57b5097ab3e2485b09d31c9bdbf"
             },
             "http_status": 200,
             "detection_method": "behavioral_difference",
-            "evidence": "\r\n<!doctype html public \"-//w3c//dtd xhtml 1.0 strict//en\" \"http://www.w3.org/tr/xhtml1/dtd/xhtml1-strict.dtd\">\r\n\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\r\n\t<head>\r\n\r\n\t\t<meta http-equiv=\"content"
+            "evidence": "\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\r\n\t<head>\r\n\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n\r\n\t\t<title>Login :: Damn Vulnerable Web Application (D"
         }
     ],
     "recommendations": [
         "Validate and sanitize all user inputs.",
         "Encode outputs to prevent HTML/JS injection.",
         "Use frameworks that automatically escape dangerous characters.",
-        "Implement Content Security Policy (CSP).",
-        "Avoid reflecting user input directly without sanitization."
+        "Implement Content Security Policy (CSP)."
     ]
 }
