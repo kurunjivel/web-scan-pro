@@ -1,6 +1,7 @@
 # xss_tester.py
 import requests, json, time, logging, difflib
 from urllib.parse import urlparse, urlunparse, urlencode
+from utils import save_report
 
 class XssTester:
     XSS_PAYLOADS = [
@@ -101,16 +102,11 @@ class XssTester:
         }
         self.vulnerabilities.append(vuln)
 
-    def generate_report(self,out_file='xss_report.json'):
-        report = {
-            'total_vulnerabilities':len(self.vulnerabilities),
-            'vulnerabilities':self.vulnerabilities,
-            'recommendations':[
-                "Validate and sanitize all user inputs.",
-                "Encode outputs to prevent HTML/JS injection.",
-                "Use frameworks that automatically escape dangerous characters.",
-                "Implement Content Security Policy (CSP)."
-            ]
-        }
-        with open(out_file,'w') as f:
-            json.dump(report,f,indent=4)
+    def generate_report(self, out_file='xss_report.json', reports_dir=None, open_after=False):
+        recommendations = [
+            "Validate and sanitize all user inputs.",
+            "Encode outputs to prevent HTML/JS injection.",
+            "Use frameworks that automatically escape dangerous characters.",
+            "Implement Content Security Policy (CSP)."
+        ]
+        return save_report(self.vulnerabilities, recommendations, out_file, reports_dir, open_after)

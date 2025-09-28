@@ -1,5 +1,6 @@
-# auth_tester.py (improved)
+# auth_tester.py (fixed)
 import requests, json, logging
+from utils import save_report
 
 class AuthTester:
     def __init__(self, session, login_url, protected_url, username='admin', password='password'):
@@ -11,6 +12,12 @@ class AuthTester:
         self.vulnerabilities = []
         logging.basicConfig(filename='auth_tester.log', level=logging.INFO,
                             format='%(asctime)s - %(levelname)s - %(message)s')
+        self.recommendations =[
+            "Enforce authentication on all protected endpoints.",
+            "Prevent invalid login bypasses.",
+            "Use secure session cookies.",
+            "Check for proper session handling and timeouts."
+        ]
 
     def run_tests(self):
         # Test protected URL without login
@@ -25,6 +32,7 @@ class AuthTester:
 
         # Test invalid login
         resp = session2.post(self.login_url, data={'username':'wrong','password':'wrong'}, allow_redirects=True)
+        # if the app redirects away from login page after failed login, it's suspicious
         if resp.url.lower() != self.login_url.lower():
             self.vulnerabilities.append({
                 'test':'invalid_login_bypass',
@@ -41,16 +49,5 @@ class AuthTester:
                 'issue':'Session cookie set without login'
             })
 
-    def generate_report(self,out_file='auth_report.json'):
-        report = {
-            'total_vulnerabilities':len(self.vulnerabilities),
-            'vulnerabilities':self.vulnerabilities,
-            'recommendations':[
-                "Enforce authentication on all protected endpoints.",
-                "Prevent invalid login bypasses.",
-                "Use secure session cookies.",
-                "Check for proper session handling and timeouts."
-            ]
-        }
-        with open(out_file,'w') as f:
-            json.dump(report,f,indent=4)
+    def generate_report(self, out_file='auth_report.json', reports_dir=None, open_after=False):
+        return save_report(self.vulnerabilities, self.recommendations, out_file, reports_dir, open_after)

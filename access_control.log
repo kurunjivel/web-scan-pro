@@ -1,0 +1,31 @@
+2025-09-28 19:16:25,302 - INFO - Starting vertical testing on http://localhost:8080/admin/panel.php
+2025-09-28 19:16:25,310 - INFO - Vertical test http://localhost:8080/admin/panel.php -> 404
+2025-09-28 19:16:26,311 - INFO - Starting vertical testing on http://localhost:8080/admin/delete_user.php?id=1
+2025-09-28 19:16:26,318 - INFO - Vertical test http://localhost:8080/admin/delete_user.php?id=1 -> 404
+2025-09-28 19:16:27,319 - INFO - Starting IDOR testing
+2025-09-28 19:16:27,394 - INFO - IDOR form test http://localhost:8080/login.php -> 200
+2025-09-28 19:16:28,397 - INFO - Report saved to reports\access_control_report.json
+2025-09-28 19:43:42,238 - INFO - Starting horizontal testing on http://localhost:8080/user/profile.php param id with 1 ids
+2025-09-28 19:43:42,245 - INFO - Horizontal test http://localhost:8080/user/profile.php?id=8080 -> 404
+2025-09-28 19:43:43,246 - INFO - Starting vertical testing on http://localhost:8080/admin/panel.php
+2025-09-28 19:43:43,250 - INFO - Vertical test http://localhost:8080/admin/panel.php -> 404
+2025-09-28 19:43:44,252 - INFO - Starting vertical testing on http://localhost:8080/admin/delete_user.php?id=1
+2025-09-28 19:43:44,256 - INFO - Vertical test http://localhost:8080/admin/delete_user.php?id=1 -> 404
+2025-09-28 19:43:45,257 - INFO - Starting IDOR testing
+2025-09-28 19:43:45,306 - INFO - IDOR form test http://localhost:8080/login.php -> 200
+2025-09-28 19:53:55,072 - INFO - Starting horizontal testing on http://localhost:8080/user/profile.php param id with 1 ids
+2025-09-28 19:53:55,076 - INFO - Horizontal test http://localhost:8080/user/profile.php?id=8080 -> 404
+2025-09-28 19:53:56,077 - INFO - Starting vertical testing on http://localhost:8080/admin/panel.php
+2025-09-28 19:53:56,080 - INFO - Vertical test http://localhost:8080/admin/panel.php -> 404
+2025-09-28 19:53:57,081 - INFO - Starting vertical testing on http://localhost:8080/admin/delete_user.php?id=1
+2025-09-28 19:53:57,084 - INFO - Vertical test http://localhost:8080/admin/delete_user.php?id=1 -> 404
+2025-09-28 19:53:58,084 - INFO - Starting IDOR testing
+2025-09-28 19:53:58,137 - INFO - IDOR form test http://localhost:8080/login.php -> 200
+2025-09-28 19:55:22,746 - INFO - Starting horizontal testing on http://localhost:8080/user/profile.php param id with 1 ids
+2025-09-28 19:55:22,749 - INFO - Horizontal test http://localhost:8080/user/profile.php?id=8080 -> 404
+2025-09-28 19:55:23,750 - INFO - Starting vertical testing on http://localhost:8080/admin/panel.php
+2025-09-28 19:55:23,753 - INFO - Vertical test http://localhost:8080/admin/panel.php -> 404
+2025-09-28 19:55:24,753 - INFO - Starting vertical testing on http://localhost:8080/admin/delete_user.php?id=1
+2025-09-28 19:55:24,756 - INFO - Vertical test http://localhost:8080/admin/delete_user.php?id=1 -> 404
+2025-09-28 19:55:25,756 - INFO - Starting IDOR testing
+2025-09-28 19:55:25,812 - INFO - IDOR form test http://localhost:8080/login.php -> 200

@@ -1,0 +1,23 @@
+{
+  "tool": "security_tester",
+  "generated_at": "2025-09-28T14:25:22.745728Z",
+  "total_vulnerabilities": 2,
+  "vulnerabilities": [
+    {
+      "test": "unauthenticated_access",
+      "url": "http://localhost:8080/dashboard.php",
+      "issue": "Protected resource accessible without login"
+    },
+    {
+      "test": "session_cookie_check",
+      "url": "http://localhost:8080/login.php",
+      "issue": "Session cookie set without login"
+    }
+  ],
+  "recommendations": [
+    "Enforce authentication on all protected endpoints.",
+    "Prevent invalid login bypasses.",
+    "Use secure session cookies.",
+    "Check for proper session handling and timeouts."
+  ]
+}

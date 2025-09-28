@@ -1,0 +1,26 @@
+{
+  "tool": "security_tester",
+  "generated_at": "2025-09-28T14:25:26.814683Z",
+  "total_vulnerabilities": 1,
+  "vulnerabilities": [
+    {
+      "type": "idor_form",
+      "url": "http://localhost:8080/login.php",
+      "form_action": "http://localhost:8080/login.php",
+      "tested_payload": {
+        "username": "test_idor_value",
+        "password": "test_idor_value",
+        "Login": "test_idor_value",
+        "user_token": "test_idor_value"
+      },
+      "http_status": 200,
+      "evidence_snippet": "\r\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\r\n\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n\r\n\t<head>\r\n\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n\r\n\t\t<title>Login :: Damn Vulnerable Web Application (DVWA) v1.10 *Development*</title>\r\n\r\n\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"dvwa/css/login.css\" />\r\n\r\n\t</head>\r\n\r\n\t<body>\r\n\r\n\t<div id=\"wrapper\">\r\n\r\n\t<div id=\"header\">\r\n\r\n\t<br />\r\n\r\n\t<p><img src=\"dvwa/images/login_logo.png\" /></p>\r\n\r\n\t<br />\r\n\r\n\t</div> <!--<div id=\"header\">-->\r\n\r\n\t<div id=\"content\">\r\n\r\n\t<form action=\"login.php\" method=\"post\">\r\n\r\n\t<fieldset>\r\n\r\n\t\t\t<label for=\"user\">Username</label> <input type=\"text\" class=\"loginInput\" size=\"20\" name=\"username\"><br />\r\n\r\n\r\n\t\t\t<label for=\"pa"
+    }
+  ],
+  "recommendations": [
+    "Always validate object ownership server-side.",
+    "Implement RBAC or ABAC and enforce on the server.",
+    "Avoid using predictable sequential IDs; prefer UUIDs.",
+    "Log and monitor access attempts for auditing."
+  ]
+}

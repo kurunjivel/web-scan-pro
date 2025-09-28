@@ -1,6 +1,7 @@
 # sqli_tester.py
 import requests, re, json, time, logging, difflib
 from urllib.parse import urlparse, urlunparse, urlencode
+from utils import save_report
 
 class SQLiTester:
     SQLI_PAYLOADS = [
@@ -24,6 +25,12 @@ class SQLiTester:
         self.vulnerabilities = []
         logging.basicConfig(filename='sqlitester.log', level=logging.INFO,
                             format='%(asctime)s - %(levelname)s - %(message)s')
+        self.recommendations = [
+            "Use parameterized queries or prepared statements.",
+            "Sanitize all inputs properly.",
+            "Use stored procedures where applicable.",
+            "Proper error handling to avoid exposing DB info."
+        ]
 
     def run_tests(self, metadata):
         for page in metadata:
@@ -118,16 +125,9 @@ class SQLiTester:
         }
         self.vulnerabilities.append(vuln)
 
-    def generate_report(self, out_file='sqli_report.json'):
-        report = {
-            'total_vulnerabilities': len(self.vulnerabilities),
-            'vulnerabilities': self.vulnerabilities,
-            'recommendations': [
-                "Use parameterized queries or prepared statements.",
-                "Sanitize all inputs properly.",
-                "Use stored procedures where applicable.",
-                "Proper error handling to avoid exposing DB info."
-            ]
-        }
-        with open(out_file,'w') as f:
-            json.dump(report,f,indent=4)
+    def generate_report(self, out_file='sqli_report.json', reports_dir=None, open_after=False):
+        """
+        Generate a JSON report. Accepts reports_dir and open_after for compatibility
+        with the run script.
+        """
+        return save_report(self.vulnerabilities, self.recommendations, out_file, reports_dir, open_after)
