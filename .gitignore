@@ -1,3 +1,26 @@
-/*.json
-/*.log
-!/reports/*.json
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Logs
+*.log
+
+# Reports / outputs
+*.json
+reports/
+crawler_output.json
+auth_report.json
+sqli_report.json
+xss_report.json
+access_control.log
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Virtual environment
+.venv/
+venv/
+env/
