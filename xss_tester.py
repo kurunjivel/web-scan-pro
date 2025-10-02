@@ -1,5 +1,4 @@
-# xss_tester.py
-import requests, json, time, logging, difflib
+import requests, time, logging, difflib
 from urllib.parse import urlparse, urlunparse, urlencode
 from utils import save_report
 

@@ -1,4 +1,3 @@
-# auth_tester.py (fixed)
 import requests, json, logging
 from utils import save_report
 

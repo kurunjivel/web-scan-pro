@@ -1,13 +1,13 @@
-# run_scan.py
 import os
 import requests
 import json
+from datetime import datetime
 from crawler import WebCrawler
 from sqli_tester import SQLiTester
 from xss_tester import XssTester
 from auth_tester import AuthTester
 from access_control_tester import AccessControlTester
-from utils import extract_user_ids
+from utils import extract_user_ids, generate_full_scan_report
 
 # Reports directory
 REPORT_DIR = "reports"
@@ -49,13 +49,14 @@ def main():
         print("Login failed! Exiting...")
         return
 
-    # ---------------------
-    # Crawl
-    # ---------------------
+    # timestamp for this run
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    # ------------------ Crawler ------------------
     crawler = WebCrawler(login_url, session=session)
     try:
         crawler.crawl()
-        crawler_output_file = os.path.join(REPORT_DIR, "crawler_output.json")
+        crawler_output_file = os.path.join(REPORT_DIR, f"crawler_output_{ts}.json")
         save_crawler_output(crawler, crawler_output_file)
         metadata = crawler.results
         print("[Crawler] Completed")
@@ -63,57 +64,46 @@ def main():
         print(f"[Crawler] Error: {e}")
         metadata = []
 
-    # ---------------------
-    # SQLi Test
-    # ---------------------
+    # ------------------ SQLi ------------------
     try:
         sqli = SQLiTester(session=session)
         sqli.run_tests(metadata)
-        sqli.generate_report(out_file='sqli_report.json', reports_dir=REPORT_DIR, open_after=False)
+        sqli.generate_report(out_file=f"sqli_report_{ts}.json", reports_dir=REPORT_DIR, open_after=False)
         print("[SQLi] Completed")
     except Exception as e:
         print(f"[SQLi] Error: {e}")
 
-    # ---------------------
-    # XSS Test
-    # ---------------------
+    # ------------------ XSS ------------------
     try:
         xss = XssTester(session=session)
         xss.run_tests(metadata)
-        xss.generate_report(out_file='xss_report.json', reports_dir=REPORT_DIR, open_after=False)
+        xss.generate_report(out_file=f"xss_report_{ts}.json", reports_dir=REPORT_DIR, open_after=False)
         print("[XSS] Completed")
     except Exception as e:
         print(f"[XSS] Error: {e}")
 
-    # ---------------------
-    # Auth Test
-    # ---------------------
+    # ------------------ Auth ------------------
     try:
         auth = AuthTester(session=session, login_url=login_url, protected_url=protected_url)
         auth.run_tests()
-        auth.generate_report(out_file='auth_report.json', reports_dir=REPORT_DIR, open_after=False)
+        auth.generate_report(out_file=f"auth_report_{ts}.json", reports_dir=REPORT_DIR, open_after=False)
         print("[Auth] Completed")
     except Exception as e:
         print(f"[Auth] Error: {e}")
 
-    # ---------------------
-    # Access Control / IDOR Test
-    # ---------------------
+    # ------------------ Access Control ------------------
     try:
         user_cookies = session.cookies.get_dict()
         ac = AccessControlTester(session=session)
 
-        # Auto-discover user IDs using utils.extract_user_ids
         user_ids = extract_user_ids(metadata) if metadata else []
         print(f"[AC] Discovered user IDs: {user_ids}")
 
-        # Horizontal: run against a profile endpoint (adjust path to your app)
         if user_ids:
             ac.test_horizontal("http://localhost:8080/user/profile.php", "id", user_ids, auth_cookies=user_cookies)
         else:
             print("[AC] No user IDs discovered; skipping horizontal tests.")
 
-        # Vertical: common admin endpoints - customize as needed
         admin_endpoints = [
             "http://localhost:8080/admin/panel.php",
             "http://localhost:8080/admin/delete_user.php?id=1"
@@ -121,13 +111,19 @@ def main():
         for ep in admin_endpoints:
             ac.test_vertical(ep, auth_cookies=user_cookies)
 
-        # IDOR tests from crawler metadata
         ac.test_idor(metadata, auth_cookies=user_cookies)
 
-        ac.generate_report(out_file='access_control_report.json', reports_dir=REPORT_DIR, open_after=False)
+        ac.generate_report(out_file=f"access_control_report_{ts}.json", reports_dir=REPORT_DIR, open_after=False)
         print("[AC] Completed")
     except Exception as e:
         print(f"[AC] Error: {e}")
+
+    # ------------------ Full Scan Report ------------------
+    try:
+        full_report = generate_full_scan_report(reports_dir=REPORT_DIR, out_file=f"full_scan_{ts}.html")
+        print(f"[+] Full scan report generated: {full_report}")
+    except Exception as e:
+        print(f"[!] Failed to generate full scan report: {e}")
 
     print("Full scan completed. Reports are in the 'reports/' directory.")
 

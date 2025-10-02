@@ -19,17 +19,9 @@ class AccessControlTester:
         self.vulnerabilities = []
 
 
-    # -----------------------------
-    # Horizontal Privilege Escalation
-    # -----------------------------
+
     def test_horizontal(self, endpoint, param_name, id_list, auth_cookies=None):
-        """
-        Attempt to access same-level users' data by modifying object IDs.
-        endpoint: full URL or path (string)
-        param_name: query parameter name to modify (e.g. 'id')
-        id_list: iterable of numeric or string IDs to test
-        auth_cookies: session cookie dict to send (optional)
-        """
+
         logging.info(f"Starting horizontal testing on {endpoint} param {param_name} with {len(id_list)} ids")
         if not id_list:
             logging.info("No user IDs provided for horizontal testing; skipping.")
@@ -55,13 +47,9 @@ class AccessControlTester:
             except requests.RequestException as e:
                 logging.error(f"Request failed during horizontal test for {obj_id}: {e}")
 
-    # -----------------------------
-    # Vertical Privilege Escalation
-    # -----------------------------
+
     def test_vertical(self, endpoint, auth_cookies=None):
-        """
-        Try to access admin/higher-priv endpoints as a regular user.
-        """
+
         logging.info(f"Starting vertical testing on {endpoint}")
         try:
             resp = self.session.get(endpoint, cookies=auth_cookies, timeout=self.timeout, allow_redirects=True)
@@ -79,14 +67,9 @@ class AccessControlTester:
         except requests.RequestException as e:
             logging.error(f"Request failed during vertical test for {endpoint}: {e}")
 
-    # -----------------------------
-    # IDOR Testing (Forms & URL params)
-    # -----------------------------
+
     def test_idor(self, metadata, auth_cookies=None):
-        """
-        Walk crawler metadata and test URL params and forms for direct object access.
-        metadata: list of page dicts from crawler (url, query_params, forms)
-        """
+
         logging.info("Starting IDOR testing")
         for page in metadata:
             page_url = page.get('url')
@@ -172,9 +155,6 @@ class AccessControlTester:
                 except requests.RequestException as e:
                     logging.error(f"IDOR form request failed for {action}: {e}")
 
-    # -----------------------------
-    # Generate Report
-    # -----------------------------
     def generate_report(self, out_file='access_control_report.json', reports_dir=None, open_after=False):
         recommendations = [
             "Always validate object ownership server-side.",

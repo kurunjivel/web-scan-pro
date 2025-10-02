@@ -1,5 +1,4 @@
-# sqli_tester.py
-import requests, re, json, time, logging, difflib
+import requests, re, time, logging, difflib
 from urllib.parse import urlparse, urlunparse, urlencode
 from utils import save_report
 
@@ -126,8 +125,5 @@ class SQLiTester:
         self.vulnerabilities.append(vuln)
 
     def generate_report(self, out_file='sqli_report.json', reports_dir=None, open_after=False):
-        """
-        Generate a JSON report. Accepts reports_dir and open_after for compatibility
-        with the run script.
-        """
+
         return save_report(self.vulnerabilities, self.recommendations, out_file, reports_dir, open_after)
